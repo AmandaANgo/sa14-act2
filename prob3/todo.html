@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Todo List</h1>
+    <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Enter a task">
+        <input type="text" id="taskDetailsInput" placeholder="Enter task details">
+        <button type="submit">Add Task</button>
+    </form>
+    
+    <ul id="taskList">
+    </ul>
+
+    <script>
+        const taskForm = document.getElementById('taskForm');
+        const taskInput = document.getElementById('taskInput');
+        const taskDetailsInput = document.getElementById('taskDetailsInput');
+        const taskList = document.getElementById('taskList');
+
+        taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const taskText = taskInput.value.trim();
+            const taskDetails = taskDetailsInput.value.trim();
+            if (taskText) {
+                addTask(taskText, taskDetails);
+                taskInput.value = '';
+                taskDetailsInput.value = '';
+            }
+        });
+
+        function addTask(text, details) {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${text}</span>
+                <span class="details">${details}</span>
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+            `;
+            taskList.appendChild(li);
+
+            const editButton = li.querySelector('.edit');
+            const deleteButton = li.querySelector('.delete');
+            editButton.addEventListener('click', editTask);
+            deleteButton.addEventListener('click', deleteTask);
+        }
+
+        function editTask(e) {
+            const li = e.target.closest('li');
+            const span = li.querySelector('span');
+            const detailsSpan = li.querySelector('.details');
+            const newText = prompt('Edit task:', span.textContent);
+            const newDetails = prompt('Edit task details:', detailsSpan.textContent);
+            if (newText !== null) {
+                span.textContent = newText;
+                detailsSpan.textContent = newDetails;
+            }
+        }
+
+        function deleteTask(e) {
+            const li = e.target.closest('li');
+            li.remove();
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
